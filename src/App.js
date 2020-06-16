@@ -1,7 +1,8 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
-  return <h1>Lets react</h1>;
+  return <Router></Router>;
 }
 
 export default App;
