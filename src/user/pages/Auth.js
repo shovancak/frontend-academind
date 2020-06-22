@@ -1,9 +1,9 @@
 import React from "react";
 
+import Card from "../../shared/components/UIElements/Card";
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
 import {
-  VALIDATOR_MIN,
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
 } from "../../shared/components/Util/validators";
@@ -25,36 +25,39 @@ const Auth = () => {
     false
   );
 
-  const placeSubmithandler = (event) => {
+  const authSubmithandler = (event) => {
     event.preventDefault();
     console.log(formState.inputs);
-    console.log(event);
   };
 
   return (
-    <form className="place-form" onSubmit={placeSubmithandler}>
-      <Input
-        id="email"
-        element="input"
-        type="text"
-        label="Email"
-        validators={[VALIDATOR_EMAIL()]}
-        errorText="Please enter a valid email."
-        onInput={inputHandler}
-      />
-      <Input
-        id="password"
-        element="input"
-        type="text"
-        label="Passwrod"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Please enter a valid password (at least 5 characters)."
-        onInput={inputHandler}
-      />
-      <Button type="submit" disabled={!formState.isValid}>
-        AUTHENTICATE
-      </Button>
-    </form>
+    <Card className="authentication">
+      <h2>Login Required</h2>
+      <hr />
+      <form onSubmit={authSubmithandler}>
+        <Input
+          id="email"
+          element="input"
+          type="email"
+          label="E-mail"
+          validators={[VALIDATOR_EMAIL()]}
+          errorText="Please enter a valid email address."
+          onInput={inputHandler}
+        />
+        <Input
+          id="password"
+          element="input"
+          type="password"
+          label="Passwrod"
+          validators={[VALIDATOR_MINLENGTH(5)]}
+          errorText="Please enter a valid password (at least 5 characters)."
+          onInput={inputHandler}
+        />
+        <Button type="submit" disable={!formState.isValid}>
+          LOGIN
+        </Button>
+      </form>
+    </Card>
   );
 };
 
