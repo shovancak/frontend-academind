@@ -27,12 +27,12 @@ const UserPlaces = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {isLoading ? (
+      {isLoading && (
         <div className="center">
           <LoadingSpinner />
         </div>
-      ) : null}
-      {!isLoading && loadedPlaces ? <PlaceList items={loadedPlaces} /> : null}
+      )}
+      {!isLoading && loadedPlaces && <PlaceList items={loadedPlaces} />}
     </React.Fragment>
   );
 };

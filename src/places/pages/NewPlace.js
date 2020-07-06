@@ -37,7 +37,7 @@ const NewPlace = () => {
 
   const history = useHistory();
 
-  const placeSubmithandler = async (event) => {
+  const placeSubmitHandler = async (event) => {
     event.preventDefault();
     try {
       await sendRequest(
@@ -58,8 +58,8 @@ const NewPlace = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="place-form" onSubmit={placeSubmithandler}>
-        {isLoading ? <LoadingSpinner asOverlay /> : null}
+      <form className="place-form" onSubmit={placeSubmitHandler}>
+        {isLoading && <LoadingSpinner asOverlay />}
         <Input
           id="title"
           element="input"
@@ -74,7 +74,7 @@ const NewPlace = () => {
           element="textarea"
           label="Description"
           validators={[VALIDATOR_MINLENGTH(5)]}
-          errorText="Please enter a description (at least 5 characters)."
+          errorText="Please enter a valid description (at least 5 characters)."
           onInput={inputHandler}
         />
         <Input

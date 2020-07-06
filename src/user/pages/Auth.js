@@ -17,9 +17,7 @@ import "./Auth.css";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
-
   const [isLoginMode, setIsLoginMode] = useState(true);
-
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -62,6 +60,7 @@ const Auth = () => {
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
+
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
@@ -92,7 +91,7 @@ const Auth = () => {
           }
         );
 
-        auth.login();
+        auth.login(responseData.user.id);
       } catch (err) {}
     }
   };
@@ -101,7 +100,7 @@ const Auth = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       <Card className="authentication">
-        {isLoading ? <LoadingSpinner asOverlay /> : null}
+        {isLoading && <LoadingSpinner asOverlay />}
         <h2>Login Required</h2>
         <hr />
         <form onSubmit={authSubmitHandler}>
@@ -110,7 +109,7 @@ const Auth = () => {
               element="input"
               id="name"
               type="text"
-              label="Name"
+              label="Your Name"
               validators={[VALIDATOR_REQUIRE()]}
               errorText="Please enter a name."
               onInput={inputHandler}
@@ -138,13 +137,8 @@ const Auth = () => {
             {isLoginMode ? "LOGIN" : "SIGNUP"}
           </Button>
         </form>
-        <p>
-          {isLoginMode
-            ? "Don't you have an account yet?"
-            : "Do you have an account?"}
-        </p>
         <Button inverse onClick={switchModeHandler}>
-          {isLoginMode ? "SIGNUP" : "LOGIN"}
+          SWITCH TO {isLoginMode ? "SIGNUP" : "LOGIN"}
         </Button>
       </Card>
     </React.Fragment>
