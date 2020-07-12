@@ -14,30 +14,45 @@ import Auth from "./user/pages/Auth";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import { AuthContext } from "./shared/context/auth-context";
 
+let logoutTimer;
+
 const App = () => {
   const [token, setToken] = useState(false);
+  const [tokenExporationDate, setTokenExpirationDate] = useState();
   const [userId, setUserId] = useState(false);
 
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
     setUserId(uid);
-    const tokenExporationDate =
+    const tokenExporationTime =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
+    setTokenExpirationDate(tokenExporationTime);
     localStorage.setItem(
       "userData",
       JSON.stringify({
         userId: uid,
         token: token,
-        expiration: tokenExporationDate.toISOString(),
+        expiration: tokenExporationTime.toISOString(),
       })
     );
   }, []);
 
   const logout = useCallback(() => {
     setToken(null);
+    setTokenExpirationDate(null);
     setUserId(null);
     localStorage.removeItem("userData");
   }, []);
+
+  useEffect(() => {
+    if (token && tokenExporationDate) {
+      const remainingTime =
+        tokenExporationDate.getTime() - new Date().getTime();
+      logoutTimer = setTimeout(logout, remainingTime);
+    } else {
+      clearTimeout(logoutTimer);
+    }
+  }, [token, logout, tokenExporationDate]);
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
